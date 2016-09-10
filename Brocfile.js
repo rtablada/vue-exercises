@@ -10,6 +10,7 @@ const Funnel = require('broccoli-funnel');
 const Babel = require('broccoli-babel-transpiler');
 const mv = require('broccoli-stew').mv;
 const browserify = require('broccoli-browserify-cache');
+const vueify = require('vueify');
 
 let pubFiles = new LiveReload('public');
 
@@ -27,6 +28,9 @@ const babelScript = new Babel('app');
 const appScript = browserify(babelScript, {
   entries: ['./index'],
   outputFile: 'app.js',
+  config(browse) {
+    browse.transform(vueify);
+  },
 });
 
 const compiledSass = new Sass(stylePaths, 'app.scss', 'app.css', {});
